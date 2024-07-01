@@ -1,10 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React from 'react';
 import type {PropsWithChildren} from 'react';
 import {
@@ -26,7 +19,7 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 type SectionProps = PropsWithChildren<{
-  title: string;
+  title: string,
 }>;
 
 function Section({children, title}: SectionProps): React.JSX.Element {
@@ -56,16 +49,16 @@ function Section({children, title}: SectionProps): React.JSX.Element {
 }
 
 function Home(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
   return (
-    <SafeAreaView style={{backgroundColor:Colors.lighter}}>
-      
-     
+    <SafeAreaView style={{flex: 1, backgroundColor: Colors.lighter}}>
+      <View style={{height: 50, width: '100%', backgroundColor: 'blue'}}></View>
+
+      <View style={{flex: 1, backgroundColor: 'pink'}}>
+        <View style={{height: 80, backgroundColor: 'red'}}>
+
+        </View>
+        
+      </View>
     </SafeAreaView>
   );
 }
