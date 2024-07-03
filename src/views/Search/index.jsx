@@ -18,7 +18,7 @@ import {
   TextInput,
   FlatList,
   TouchableOpacity,
-  Image
+  Image,
 } from 'react-native';
 
 import {
@@ -30,6 +30,7 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import baseAPI from '../../services/baseAPI';
+import Item_Search from '../../components/Items_Search';
 type SectionProps = PropsWithChildren<{
   title: string,
 }>;
@@ -70,79 +71,55 @@ function Search(): React.JSX.Element {
       loadData();
     }, 300);
   }, [txtSearch]);
+
   const loadData = async () => {
     if (!txtSearch) {
-      setDataSearch(null)
+      setDataSearch(null);
       return;
     }
 
     const res = await baseAPI.getSearch({user: txtSearch});
-    console.log('res:', res);
     if (res?.data) {
       setDataSearch(res);
     }
   };
-  console.log("datas",dataSearch)
+  
   return (
-    <SafeAreaView style={{flex:1}}>
-      <View
-        style={{
-          backgroundColor: '#f2f2f2',
-          flexDirection: 'row',
-          paddingBottom:10,
-          borderBottomWidth:StyleSheet.hairlineWidth,
-          borderBottomColor:'#c2c2c2'
-        }}>
-        <View
-        style={{
-         flex:1,
-          backgroundColor: '#fff',
-          marginHorizontal: 15,
-          borderRadius: 12,
-          flexDirection: 'row',
-        }}>
-        <CBN_Icons name="search-outline" />
-        <TextInput
-          style={{flex:1,fontSize: 18, fontWeight: '500'}}
-          placeholder="Tìm kiếm"
-          value={txtSearch}
-          onChangeText={e => setTxtSearch(e)}
-        />
-        {txtSearch&&<TouchableOpacity 
-        style={{height:50,width:60,justifyContent:'center',alignItems:'center'}} 
-        onPress={()=>setTxtSearch('')}
-        >
-          <Text style={{fontSize:18,fontWeight:'300'}}>Huỷ</Text>
-        </TouchableOpacity>}
-      </View>
-      </View>
-      <View style={{flex:1}}>
-        <FlatList 
-        data={dataSearch?.data?.items||[]}
-        style={{paddingTop:20}}
-        keyExtractor={(e,i)=>`itemSearch${i}`}
-        renderItem={({item})=>{
-
-          return <View style={{
-            width:'100%',height:80,
-            marginBottom:5,
-            flexDirection:'row',padding:5
-            }}>
-<Image
-            style={{width: 70, height: 70, borderRadius:60,backgroundColor:'#fff'}}
-            source={{
-              uri: item?.profile_pic_url,
-            }}
-            resizeMode="contain"
+    <SafeAreaView style={{flex: 1}}>
+      <View style={styles.container}>
+        <View style={styles.containerSearch}>
+          <CBN_Icons name="search-outline" />
+          <TextInput
+            style={{flex: 1, fontSize: 18, fontWeight: '500'}}
+            placeholder="Tìm kiếm"
+            value={txtSearch}
+            onChangeText={e => setTxtSearch(e)}
           />
-          <View style={{flex:1,justifyContent:'center',paddingHorizontal:10}}>
-          <Text style={{fontSize:16,fontWeight:'500'}}>{item?.full_name}</Text>
-          <Text style={{fontSize:14,color:'#c2c2c2'}}>{item?.username}</Text>
-          </View>
-          </View>
-        }}
-        />
+          {txtSearch && (
+            <TouchableOpacity
+              style={styles.btnCancel}
+              onPress={() => setTxtSearch('')}>
+              <Text style={{fontSize: 18, fontWeight: '300'}}>Huỷ</Text>
+            </TouchableOpacity>
+          )}
         </View>
+      </View>
+      <View style={{flex: 1}}>
+        <FlatList
+          data={dataSearch?.data?.items || []}
+          style={{paddingTop: 20}}
+          keyExtractor={(e, i) => `itemSearch${i}`}
+          renderItem={({item}) => {
+            return (
+              <Item_Search
+                profile_pic_url={item?.profile_pic_url}
+                full_name={item?.full_name}
+                username={item?.username}
+              />
+            );
+          }}
+        />
+      </View>
     </SafeAreaView>
   );
 }
@@ -161,18 +138,25 @@ const CBN_Icons = ({name = 'ellipsis-horizontal-outline'}) => {
   );
 };
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    backgroundColor: '#f2f2f2',
+    flexDirection: 'row',
+    paddingBottom: 10,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: '#c2c2c2',
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  containerSearch: {
+    flex: 1,
+    backgroundColor: '#fff',
+    marginHorizontal: 15,
+    borderRadius: 12,
+    flexDirection: 'row',
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
+  btnCancel: {
+    height: 50,
+    width: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   highlight: {
     fontWeight: '700',
