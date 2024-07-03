@@ -11,6 +11,7 @@ import {
   FlatList,
   Image,
   RefreshControl,
+  Dimensions,
 } from 'react-native';
 
 import {
@@ -21,15 +22,21 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+import Animated, {useSharedValue, withSpring} from 'react-native-reanimated';
 import Swiper from 'react-native-swiper';
 import {getStatusBarHeight} from '../../utils/StatusBar';
 import Video, {VideoRef} from 'react-native-video';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import baseAPI from '../../services/baseAPI';
 import INS_Item from './Items';
+import HomeFollow from '../../components/HomeFollow';
 const reelUser = 'mrbeast';
 const heightStatus = getStatusBarHeight();
 const ITEM_HEIGHT = 650;
+
+const {width} = Dimensions.get('window');
+var itvSetY;
+var currentY = 0;
 function Home(): React.JSX.Element {
   const [dataINS, setDataINS] = useState(null);
   const [itemViewing, setItemViewing] = useState(null);
@@ -68,26 +75,54 @@ function Home(): React.JSX.Element {
       setDataINS(res);
     }
   };
-  console.log('dataINS:', dataINS);
+  const height = useSharedValue(50);
+
+  const onScroll = (e: any) => {
+    const offsetY = e.nativeEvent.contentOffset.y;
+    clearInterval(itvSetY);
+    itvSetY = setInterval(() => {
+      currentY = offsetY;
+    }, 300);
+    let value = currentY - offsetY;
+    console.log('value:', value, '/', height.value);
+    height.value =
+      value < 0
+        ? value + height.value
+        : value > 50 || height.value == 50
+        ? 50
+        : value;
+  };
   return (
-    <View style={{flex: 1, backgroundColor: '#fff', marginTop: heightStatus}}>
-      <View
+    <View
+      style={{flex: 1, backgroundColor: '#F2F2F2', marginTop: heightStatus}}>
+      <Animated.View
         style={{
           position: 'absolute',
           top: 0,
-          left: 0,
-          right: 0,
-          height: 50,
-          width: '100%',
-          backgroundColor: 'blue',
+          width: width,
+          height: height,
+          backgroundColor: '#F2F2F2',
           zIndex: 1,
-        }}></View>
+          flexDirection: 'row',
+        }}>
+        <View style={{flex: 1}}>
+          <Image
+            style={{width: 120, height: '100%', marginLeft: 10}}
+            source={{
+              uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/800px-Instagram_logo.svg.png',
+            }}
+            resizeMode="contain"
+          />
+        </View>
+      </Animated.View>
 
       <View style={{flex: 1}}>
         <FlatList
           data={dataINS?.data?.items || []}
           style={{paddingTop: 50}}
           contentContainerStyle={{paddingBottom: 100}}
+          onScroll={onScroll}
+          scrollEventThrottle={16}
           onViewableItemsChanged={e => {
             console.log('onViewableItemsChanged:', e);
             setItemViewing(e);
@@ -96,26 +131,20 @@ function Home(): React.JSX.Element {
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
-          ListHeaderComponent={() => (
-            <View style={{height: 120, backgroundColor: 'red'}}></View>
-          )}
+          ListHeaderComponent={() => <HomeFollow />}
           showsVerticalScrollIndicator={false}
           onEndReached={loadMoreDataINS}
-          // ItemSeparatorComponent={() => (
-          //   <View style={{width: '100%', height: 5, backgroundColor: 'red'}} />
-          // )}
-          getItemLayout={(data, index) => (
-            {length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index}
-          )}
+          getItemLayout={(data, index) => ({
+            length: ITEM_HEIGHT,
+            offset: ITEM_HEIGHT * index,
+            index,
+          })}
           renderItem={({item, index}) => {
             const isPause =
               itemViewing?.viewableItems[0].index == index ? false : true;
-              console.log("isPause:",index,'-',isPause)
-            // const isPause =false;
             return (
               <View>
-                {/* <Text>isPause:{isPause?'true':'false'}</Text> */}
-                <INS_Item item={item} index={index} isPause={isPause}/>
+                <INS_Item item={item} index={index} isPause={isPause} />
               </View>
             );
           }}
@@ -138,36 +167,6 @@ const CBN_Icons = ({name = 'ellipsis-horizontal-outline'}) => {
     </View>
   );
 };
-// type INS_ItemProps = PropsWithChildren<{
-//   title: string,
-// }>;
-
-// const INS_Item = ({children, title}: INS_ItemProps) => {
-//   const isDarkMode = useColorScheme() === 'dark';
-//   return (
-//     <View style={styles.sectionContainer}>
-//       <Text
-//         style={[
-//           styles.sectionTitle,
-//           {
-//             color: isDarkMode ? Colors.white : Colors.black,
-//           },
-//         ]}>
-//         {title}
-//       </Text>
-//       <Text
-//         style={[
-//           styles.sectionDescription,
-//           {
-//             color: isDarkMode ? Colors.light : Colors.dark,
-//           },
-//         ]}>
-//         {children}
-//       </Text>
-//     </View>
-//   );
-// };
-
 const styles = StyleSheet.create({
   sectionContainer: {
     marginTop: 32,
