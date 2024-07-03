@@ -5,7 +5,7 @@
  * @format
  */
 
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
@@ -15,6 +15,10 @@ import {
   Text,
   useColorScheme,
   View,
+  TextInput,
+  FlatList,
+  TouchableOpacity,
+  Image
 } from 'react-native';
 
 import {
@@ -24,12 +28,13 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import baseAPI from '../../services/baseAPI';
 type SectionProps = PropsWithChildren<{
-  title: string;
+  title: string,
 }>;
 
-function Section({children, title}: SectionProps): React.JSX.Element {
+function Item({children, title}: SectionProps): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
   return (
     <View style={styles.sectionContainer}>
@@ -54,48 +59,107 @@ function Section({children, title}: SectionProps): React.JSX.Element {
     </View>
   );
 }
-
+var TOSeach;
 function Search(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  const [txtSearch, setTxtSearch] = useState('');
+  const [dataSearch, setDataSearch] = useState(null);
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  useEffect(() => {
+    clearTimeout(TOSeach);
+    TOSeach = setTimeout(() => {
+      loadData();
+    }, 300);
+  }, [txtSearch]);
+  const loadData = async () => {
+    if (!txtSearch) {
+      setDataSearch(null)
+      return;
+    }
+
+    const res = await baseAPI.getSearch({user: txtSearch});
+    console.log('res:', res);
+    if (res?.data) {
+      setDataSearch(res);
+    }
   };
-
+  console.log("datas",dataSearch)
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
+    <SafeAreaView style={{flex:1}}>
+      <View
+        style={{
+          backgroundColor: '#f2f2f2',
+          flexDirection: 'row',
+          paddingBottom:10,
+          borderBottomWidth:StyleSheet.hairlineWidth,
+          borderBottomColor:'#c2c2c2'
+        }}>
         <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
+        style={{
+         flex:1,
+          backgroundColor: '#fff',
+          marginHorizontal: 15,
+          borderRadius: 12,
+          flexDirection: 'row',
+        }}>
+        <CBN_Icons name="search-outline" />
+        <TextInput
+          style={{flex:1,fontSize: 18, fontWeight: '500'}}
+          placeholder="Tìm kiếm"
+          value={txtSearch}
+          onChangeText={e => setTxtSearch(e)}
+        />
+        {txtSearch&&<TouchableOpacity 
+        style={{height:50,width:60,justifyContent:'center',alignItems:'center'}} 
+        onPress={()=>setTxtSearch('')}
+        >
+          <Text style={{fontSize:18,fontWeight:'300'}}>Huỷ</Text>
+        </TouchableOpacity>}
+      </View>
+      </View>
+      <View style={{flex:1}}>
+        <FlatList 
+        data={dataSearch?.data?.items||[]}
+        style={{paddingTop:20}}
+        keyExtractor={(e,i)=>`itemSearch${i}`}
+        renderItem={({item})=>{
+
+          return <View style={{
+            width:'100%',height:80,
+            marginBottom:5,
+            flexDirection:'row',padding:5
+            }}>
+<Image
+            style={{width: 70, height: 70, borderRadius:60,backgroundColor:'#fff'}}
+            source={{
+              uri: item?.profile_pic_url,
+            }}
+            resizeMode="contain"
+          />
+          <View style={{flex:1,justifyContent:'center',paddingHorizontal:10}}>
+          <Text style={{fontSize:16,fontWeight:'500'}}>{item?.full_name}</Text>
+          <Text style={{fontSize:14,color:'#c2c2c2'}}>{item?.username}</Text>
+          </View>
+          </View>
+        }}
+        />
         </View>
-      </ScrollView>
     </SafeAreaView>
   );
 }
 
+const CBN_Icons = ({name = 'ellipsis-horizontal-outline'}) => {
+  return (
+    <View
+      style={{
+        width: 50,
+        height: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+      <Ionicons name={name} size={22} color={'black'} />
+    </View>
+  );
+};
 const styles = StyleSheet.create({
   sectionContainer: {
     marginTop: 32,

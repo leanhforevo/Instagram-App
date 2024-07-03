@@ -9,6 +9,13 @@ const getReelAndPost = async ({ user, pageToken }) => {
     return remotes.get(api).catch(() => null)
 }
 
+const getSearch = async ({ user }) => {
+    let api = url.getSearch(user);
+console.log("api:",api)
+    return remotes.get(api).catch(() => null)
+}
+
 export default {
-    getReelAndPost
+    getReelAndPost,
+    getSearch
 }
