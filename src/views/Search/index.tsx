@@ -31,35 +31,7 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import baseAPI from '../../services/baseAPI';
 import Item_Search from '../../components/Items_Search';
-type SectionProps = PropsWithChildren<{
-  title: string,
-}>;
 
-function Item({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
 var TOSeach;
 function Search(): React.JSX.Element {
   const [txtSearch, setTxtSearch] = useState('');

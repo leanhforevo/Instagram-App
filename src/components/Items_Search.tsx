@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import type {PropsWithChildren} from 'react';
-import {StyleSheet, View, Image} from 'react-native';
+import {StyleSheet, View, Image,Text} from 'react-native';
 type Item_SearchProps = PropsWithChildren<{
   profile_pic_url: string,
   full_name: string,
