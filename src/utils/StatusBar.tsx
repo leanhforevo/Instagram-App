@@ -34,7 +34,7 @@ let isIPhone12Max_v = false;
 let isIPhoneWithMonobrow_v = false;
 let isIPhoneWithDynamicIsland_v = false;
 
-if (Platform.OS === "ios" && !Platform.isPad && !Platform.isTVOS) {
+if (Platform.OS === "ios" && !Platform.isPad && !Platform.isTV) {
   if (W_WIDTH === X_WIDTH && W_HEIGHT === X_HEIGHT) {
     isIPhoneWithMonobrow_v = true;
     isIPhoneX_v = true;
@@ -67,11 +67,11 @@ export const isIPhone12Max = () => isIPhone12Max_v;
 export const isIPhoneWithMonobrow = () => isIPhoneWithMonobrow_v;
 export const isIPhoneWithDynamicIsland = () => isIPhoneWithDynamicIsland_v;
 
-const getExpoRoot = () => global.Expo || global.__expo || global.__exponent;
+// const getExpoRoot = () => global.Expo || global.__expo || global.__exponent;
 
-export const isExpo = () => getExpoRoot() !== undefined;
+// export const isExpo = () => getExpoRoot() !== undefined;
 
-export function getStatusBarHeight(skipAndroid) {
+export function getStatusBarHeight(skipAndroid: any):any {
   return Platform.select({
     ios: statusBarHeight,
     android: skipAndroid ? 0 : StatusBar.currentHeight,

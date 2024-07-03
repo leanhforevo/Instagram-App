@@ -1,41 +1,23 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
 
-import React, {useEffect, useState} from 'react';
-import type {PropsWithChildren} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
+  FlatList,
   SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
-  View,
   TextInput,
-  FlatList,
   TouchableOpacity,
-  Image,
+  View
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import baseAPI from '../../services/baseAPI';
 import Item_Search from '../../components/Items_Search';
+import baseAPI from '../../services/baseAPI';
 
-var TOSeach;
+var TOSeach: string | number | NodeJS.Timeout | undefined;
 function Search(): React.JSX.Element {
   const [txtSearch, setTxtSearch] = useState('');
-  const [dataSearch, setDataSearch] = useState(null);
+  const [dataSearch, setDataSearch] = useState<any>(null);
 
   useEffect(() => {
     clearTimeout(TOSeach);
@@ -50,19 +32,19 @@ function Search(): React.JSX.Element {
       return;
     }
 
-    const res = await baseAPI.getSearch({user: txtSearch});
+    const res = await baseAPI.getSearch({ user: txtSearch });
     if (res?.data) {
       setDataSearch(res);
     }
   };
-  
+
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <View style={styles.containerSearch}>
           <CBN_Icons name="search-outline" />
           <TextInput
-            style={{flex: 1, fontSize: 18, fontWeight: '500'}}
+            style={{ flex: 1, fontSize: 18, fontWeight: '500' }}
             placeholder="Tìm kiếm"
             value={txtSearch}
             onChangeText={e => setTxtSearch(e)}
@@ -71,17 +53,17 @@ function Search(): React.JSX.Element {
             <TouchableOpacity
               style={styles.btnCancel}
               onPress={() => setTxtSearch('')}>
-              <Text style={{fontSize: 18, fontWeight: '300'}}>Huỷ</Text>
+              <Text style={{ fontSize: 18, fontWeight: '300' }}>Huỷ</Text>
             </TouchableOpacity>
           )}
         </View>
       </View>
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <FlatList
           data={dataSearch?.data?.items || []}
-          style={{paddingTop: 20}}
+          style={{ paddingTop: 20 }}
           keyExtractor={(e, i) => `itemSearch${i}`}
-          renderItem={({item}) => {
+          renderItem={({ item }) => {
             return (
               <Item_Search
                 profile_pic_url={item?.profile_pic_url}
@@ -96,7 +78,7 @@ function Search(): React.JSX.Element {
   );
 }
 
-const CBN_Icons = ({name = 'ellipsis-horizontal-outline'}) => {
+const CBN_Icons = ({ name = 'ellipsis-horizontal-outline' }) => {
   return (
     <View
       style={{

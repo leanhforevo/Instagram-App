@@ -1,53 +1,37 @@
-import React, {useEffect, useState} from 'react';
-import type {PropsWithChildren} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
+  Dimensions,
   FlatList,
   Image,
   RefreshControl,
-  Dimensions,
+  StyleSheet,
+  View
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 
-import Animated, {useSharedValue, withSpring} from 'react-native-reanimated';
-import Swiper from 'react-native-swiper';
-import {getStatusBarHeight} from '../../utils/StatusBar';
-import Video, {VideoRef} from 'react-native-video';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import baseAPI from '../../services/baseAPI';
-import INS_Item from './Items';
+import Animated, { useSharedValue } from 'react-native-reanimated';
 import HomeFollow from '../../components/HomeFollow';
+import baseAPI from '../../services/baseAPI';
+import { getStatusBarHeight } from '../../utils/StatusBar';
+import INS_Item from './Items';
 const reelUser = 'mrbeast';
-const heightStatus = getStatusBarHeight();
+const heightStatus = getStatusBarHeight(false);
 const ITEM_HEIGHT = 650;
 
-const {width} = Dimensions.get('window');
-var itvSetY;
+const { width } = Dimensions.get('window');
+var itvSetY: string | number | NodeJS.Timeout | undefined;
 var currentY = 0;
 function Home(): React.JSX.Element {
-  const [dataINS, setDataINS] = useState(null);
-  const [itemViewing, setItemViewing] = useState(null);
-  const [refreshing, setRefreshing] = useState(false);
+  const [dataINS, setDataINS] = useState<any>(null);
+  const [itemViewing, setItemViewing] = useState<any>(null);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
   useEffect(() => {
     loadDataINS();
   }, []);
 
   const loadDataINS = async () => {
-    const res = await baseAPI.getReelAndPost({user: reelUser});
+    const res = await baseAPI.getReelAndPost({ user: reelUser, pageToken: '' });
     if (res?.data) {
       setDataINS(res);
     }
@@ -59,7 +43,7 @@ function Home(): React.JSX.Element {
     setRefreshing(false);
   };
   const loadMoreDataINS = async () => {
-    if (!dataINS.pagination_token) {
+    if (!dataINS?.pagination_token) {
       console.log('Not found pagination_token');
       return;
     }
@@ -84,17 +68,16 @@ function Home(): React.JSX.Element {
       currentY = offsetY;
     }, 300);
     let value = currentY - offsetY;
-    console.log('value:', value, '/', height.value);
     height.value =
       value < 0
         ? value + height.value
         : value > 50 || height.value == 50
-        ? 50
-        : value;
+          ? 50
+          : value;
   };
   return (
     <View
-      style={{flex: 1, backgroundColor: '#F2F2F2', marginTop: heightStatus}}>
+      style={{ flex: 1, backgroundColor: '#F2F2F2', marginTop: heightStatus }}>
       <Animated.View
         style={{
           position: 'absolute',
@@ -105,9 +88,9 @@ function Home(): React.JSX.Element {
           zIndex: 1,
           flexDirection: 'row',
         }}>
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
           <Image
-            style={{width: 120, height: '100%', marginLeft: 10}}
+            style={{ width: 120, height: '100%', marginLeft: 10 }}
             source={{
               uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/800px-Instagram_logo.svg.png',
             }}
@@ -116,11 +99,11 @@ function Home(): React.JSX.Element {
         </View>
       </Animated.View>
 
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <FlatList
           data={dataINS?.data?.items || []}
-          style={{paddingTop: 50}}
-          contentContainerStyle={{paddingBottom: 100}}
+          style={{ paddingTop: 50 }}
+          contentContainerStyle={{ paddingBottom: 100 }}
           onScroll={onScroll}
           scrollEventThrottle={16}
           onViewableItemsChanged={e => {
@@ -139,7 +122,7 @@ function Home(): React.JSX.Element {
             offset: ITEM_HEIGHT * index,
             index,
           })}
-          renderItem={({item, index}) => {
+          renderItem={({ item, index }) => {
             const isPause =
               itemViewing?.viewableItems[0].index == index ? false : true;
             return (
@@ -154,56 +137,9 @@ function Home(): React.JSX.Element {
   );
 }
 
-const CBN_Icons = ({name = 'ellipsis-horizontal-outline'}) => {
-  return (
-    <View
-      style={{
-        width: 50,
-        height: 50,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
-      <Ionicons name={name} size={22} color={'black'} />
-    </View>
-  );
-};
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
 
-  wrapper: {},
-  slide1: {},
-  slide2: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#97CAE5',
-  },
-  slide3: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#92BBD9',
-  },
-  text: {
-    color: '#fff',
-    fontSize: 30,
-    fontWeight: 'bold',
-  },
+const styles = StyleSheet.create({
+
 });
 
 export default Home;
