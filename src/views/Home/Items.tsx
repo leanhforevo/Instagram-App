@@ -1,38 +1,23 @@
-import React, {useEffect, useState, memo} from 'react';
-import type {PropsWithChildren} from 'react';
+import type { PropsWithChildren } from 'react';
+import React, { memo } from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
+  Image,
   StyleSheet,
   Text,
-  useColorScheme,
   View,
-  FlatList,
-  Image,
-  RefreshControl,
+  TouchableOpacity
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 
 import Swiper from 'react-native-swiper';
-import {getStatusBarHeight} from '../../utils/StatusBar';
-import Video, {VideoRef} from 'react-native-video';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import baseAPI from '../../services/baseAPI';
+import Video from 'react-native-video';
 
-const reelUser = 'mrbeast';
-const heightStatus = getStatusBarHeight();
+
 const ITEM_HEIGHT = 650;
 
-var timeRender=0
-const CBN_Icons = ({name = 'ellipsis-horizontal-outline'}) => {
+
+const CBN_Icons = ({ name = 'ellipsis-horizontal-outline' }) => {
   return (
     <View
       style={{
@@ -48,19 +33,24 @@ const CBN_Icons = ({name = 'ellipsis-horizontal-outline'}) => {
 type INS_ItemProps = PropsWithChildren<{
   item: object,
   index: number,
-  isPause:boolean
+  isPause: boolean
 }>;
 
-const INS_Item = ({item, index, isPause}: INS_ItemProps) => {
-  const [pau,setPau]=useState(true)
-  timeRender+=1
+import { navigate } from '../../utils/RootNavigation';
+const INS_Item = ({ item, index, isPause }: INS_ItemProps) => {
+  const _evtPressItem = () => {
+    navigate('DetailsScreen',{data:item})
+  }
   return (
-    <View
+    <TouchableOpacity
       style={{
         width: '100%',
         height: ITEM_HEIGHT,
         backgroundColor: '#fff',
-      }}>
+      }}
+      activeOpacity={1}
+      onPress={_evtPressItem}
+      >
       <View
         style={{
           width: '100%',
@@ -75,7 +65,7 @@ const INS_Item = ({item, index, isPause}: INS_ItemProps) => {
             alignItems: 'center',
           }}>
           <Image
-            style={{width: 40, height: 40, borderRadius: 40}}
+            style={{ width: 40, height: 40, borderRadius: 40 }}
             source={{
               uri: item?.user?.profile_pic_url,
             }}
@@ -88,10 +78,10 @@ const INS_Item = ({item, index, isPause}: INS_ItemProps) => {
             justifyContent: 'center',
             paddingHorizontal: 10,
           }}>
-          <Text style={{fontSize: 16, fontWeight: 'bold'}}>
+          <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
             {item?.user?.full_name}
           </Text>
-          <Text style={{fontSize: 15, fontWeight: '500'}}>👀 {item?.user?.mrbeast}</Text>
+          <Text style={{ fontSize: 15, fontWeight: '500' }}>👀 {item?.user?.mrbeast}</Text>
         </View>
         <View
           style={{
@@ -106,7 +96,7 @@ const INS_Item = ({item, index, isPause}: INS_ItemProps) => {
               justifyContent: 'center',
               padding: 10,
             }}>
-            <Text style={{fontSize: 16, fontWeight: '500'}}>Theo dõi</Text>
+            <Text style={{ fontSize: 16, fontWeight: '500' }}>Theo dõi</Text>
           </View>
           <View
             style={{
@@ -122,10 +112,10 @@ const INS_Item = ({item, index, isPause}: INS_ItemProps) => {
           </View>
         </View>
       </View>
-      <View style={{flex: 1, backgroundColor: 'black'}}>
+      <View style={{ flex: 1, backgroundColor: 'black' }}>
         {!item.has_audio &&
-        item.carousel_media &&
-        item.carousel_media.length > 0 ? (
+          item.carousel_media &&
+          item.carousel_media.length > 0 ? (
           <Swiper style={styles.wrapper} showsButtons={false}>
             {(item.carousel_media || []).map((e, i) => {
               return (
@@ -133,7 +123,7 @@ const INS_Item = ({item, index, isPause}: INS_ItemProps) => {
                   key={`itemKeyList${index}ofItem${i}`}
                   style={styles.slide1}>
                   <Image
-                    style={{width: '100%', height: '100%'}}
+                    style={{ width: '100%', height: '100%' }}
                     source={{
                       uri: e.thumbnail_url,
                     }}
@@ -144,7 +134,7 @@ const INS_Item = ({item, index, isPause}: INS_ItemProps) => {
           </Swiper>
         ) : !item.is_video ? (
           <Image
-            style={{width: '100%', height: '100%'}}
+            style={{ width: '100%', height: '100%' }}
             source={{
               uri: item.thumbnail_url,
             }}
@@ -153,7 +143,7 @@ const INS_Item = ({item, index, isPause}: INS_ItemProps) => {
         {item.is_video ? (
           <Video
             // Can be a URL or a local file.
-            source={{uri: item?.video_url}}
+            source={{ uri: item?.video_url }}
             thumbnail={{
               uri: 'https://reactnative.dev/img/tiny_logo.png',
             }}
@@ -165,7 +155,7 @@ const INS_Item = ({item, index, isPause}: INS_ItemProps) => {
             onError={() => {
               console.log('onError');
             }}
-            style={{width: '100%', height: '100%'}}
+            style={{ width: '100%', height: '100%' }}
             resizeMode="cover"
             rate={1}
             volume={10}
@@ -182,26 +172,26 @@ const INS_Item = ({item, index, isPause}: INS_ItemProps) => {
       </View>
 
       {/* bottom Item */}
-      <View style={{height: 160, zIndex: 1}}>
+      <View style={{ height: 160, zIndex: 1 }}>
         <View
           style={{
             height: 50,
             flexDirection: 'row',
           }}>
-          <View style={{flex: 1, flexDirection: 'row'}}>
+          <View style={{ flex: 1, flexDirection: 'row' }}>
             <CBN_Icons name={'heart-outline'} />
             <CBN_Icons name={'heart-outline'} />
             <CBN_Icons name={'chatbubble-outline'} />
           </View>
-          <View style={{width: 50}}>
+          <View style={{ width: 50 }}>
             <CBN_Icons name={'open-outline'} />
           </View>
         </View>
-        <View style={{flex: 1, paddingHorizontal: 15}}>
-          <Text style={{fontSize: 16, fontWeight: '500', lineHeight: 16}}>
+        <View style={{ flex: 1, paddingHorizontal: 15 }}>
+          <Text style={{ fontSize: 16, fontWeight: '500', lineHeight: 16 }}>
             322.212 lượt thích
           </Text>
-          <Text style={{fontSize: 16, fontWeight: '400', lineHeight: 20}}>
+          <Text style={{ fontSize: 16, fontWeight: '400', lineHeight: 20 }}>
             NokeyNoway Black showwwwww!
           </Text>
           <Text
@@ -227,7 +217,7 @@ const INS_Item = ({item, index, isPause}: INS_ItemProps) => {
               alignItems: 'center',
             }}>
             <Image
-              style={{width: 30, height: 30, borderRadius: 30}}
+              style={{ width: 30, height: 30, borderRadius: 30 }}
               source={{
                 uri: 'https://reactnative.dev/img/tiny_logo.png',
               }}
@@ -251,7 +241,7 @@ const INS_Item = ({item, index, isPause}: INS_ItemProps) => {
           </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

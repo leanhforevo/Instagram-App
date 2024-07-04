@@ -12,12 +12,12 @@ import DetailsScreen from './views/Details';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
-const hideHeader = {headerShown: false,};
+const hideHeader = {headerShown: false};
 import Navigation from './navigation/Navigations';
 export default function App() {
   return (
-   <View style={{flex:1}}>
-<Navigation />
-   </View>
+    <View style={{flex: 1}}>
+      <Navigation />
+    </View>
   );
 }
