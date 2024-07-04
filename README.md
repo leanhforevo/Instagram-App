@@ -21,7 +21,7 @@ InsApp is a React Native application that replicates key features of Instagram. 
 
 InsApp is a mobile application developed using React Native, aiming to provide a seamless user experience similar to Instagram. Users can view engaging short video reels and search for other users within the app.
 
-![plot](./__screenshot__/home.png)
+![plot](./__screenshot__/home.png)(./__screenshot__/videoDemo2.mp4)
 ## Features
 
 - View Reel&Post
