@@ -1,79 +1,130 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
-# Getting Started
+# Instagram App
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+InsApp is a React Native application that replicates key features of Instagram. It includes functionalities such as viewing reels and searching for users.
 
-## Step 1: Start the Metro Server
+## Table of Contents
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+- [Introduction](#introduction)
+- [Features](#features)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Running the App](#running-the-app)
+- [Testing](#testing)
+- [Folder Structure](#folder-structure)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
 
-To start Metro, run the following command from the _root_ of your React Native project:
+## Introduction
 
-```bash
-# using npm
-npm start
+InsApp is a mobile application developed using React Native, aiming to provide a seamless user experience similar to Instagram. Users can view engaging short video reels and search for other users within the app.
 
-# OR using Yarn
-yarn start
+![plot](./__screenshot__/home.png)
+
+## Features
+
+- View Reel&Post
+- Search User
+- Animation
+- UnitTest (search screen)
+
+## Getting Started
+
+### Prerequisites
+
+Ensure you have the following installed:
+
+- [Node.js](https://nodejs.org/)
+- [npm](https://www.npmjs.com/) or [Yarn](https://yarnpkg.com/)
+- [React Native CLI](https://reactnative.dev/docs/environment-setup)
+- [Xcode](https://developer.apple.com/xcode/) (for iOS development)
+- [Android Studio](https://developer.android.com/studio) (for Android development)
+
+### Installation
+
+Clone the repository and install the dependencies:
+
+```sh
+git clone https://github.com/leanhforevo/Instagram-App.git
+cd Instagram-App
+npm install
+# or if you use Yarn
+yarn install
 ```
 
-## Step 2: Start your Application
+## Running the App
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+### iOS
 
-### For Android
+Run the following command to start the iOS app:
 
-```bash
-# using npm
-npm run android
-
-# OR using Yarn
-yarn android
+```sh
+npx react-native run-ios
 ```
 
-### For iOS
+### Android
 
-```bash
-# using npm
-npm run ios
+Run the following command to start the Android app:
 
-# OR using Yarn
-yarn ios
+```sh
+npx react-native run-android
 ```
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+Ensure you have an Android emulator running or a device connected.
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+## Testing
 
-## Step 3: Modifying your App
+To run the tests, use:
 
-Now that you have successfully run the app, let's modify it.
+```sh
+npm test
+# or if you use Yarn
+yarn test
+```
+![plot](./__screenshot__/unittest.png)
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
+## Folder Structure
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
+Provide a brief explanation of the project folder structure:
 
-## Congratulations! :tada:
+```
+MyReactNativeApp
+├── android             # Android specific code
+├── ios                 # iOS specific code
+├── src                 # Source code
+│   ├── components      # Reusable components
+│   ├── views         # Application screens
+│   ├── navigation      # Navigation configuration
+│   ├── services        # API services
+│   ├── store           # State management (not yet)
+│   ├── utils           # Utility functions
+│   └── index.tsx         # Entry point
+├── __tests__           # Test files
+├── package.json        # Project dependencies
+└── README.md           # Project documentation
+```
 
-You've successfully run and modified your React Native App. :partying_face:
+## Contributing
 
-### Now what?
+Contributions are welcome! Please follow these steps to contribute:
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
+1. Fork the repository.
+2. Create a new branch.
+3. Make your changes and commit them.
+4. Push your changes to your fork.
+5. Create a pull request.
 
-# Troubleshooting
+Please make sure to update tests as appropriate.
 
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+## License
 
-# Learn More
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-To learn more about React Native, take a look at the following resources:
+## Contact
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+If you have any questions, feel free to reach out:
+
+- Email: leanhforevo@gmail.com.com
+- GitHub: [your-username](https://github.com/leanhforevo)
