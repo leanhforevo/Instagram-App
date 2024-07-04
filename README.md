@@ -22,7 +22,6 @@ InsApp is a React Native application that replicates key features of Instagram. 
 InsApp is a mobile application developed using React Native, aiming to provide a seamless user experience similar to Instagram. Users can view engaging short video reels and search for other users within the app.
 
 ![plot](./__screenshot__/home.png)
-
 ## Features
 
 - View Reel&Post
@@ -31,6 +30,15 @@ InsApp is a mobile application developed using React Native, aiming to provide a
 - UnitTest (search screen)
 
 ## Getting Started
+  - Add config key in ./src/services/configs.json
+  - Register data in [Rappid API](https://rapidapi.com/social-api1-instagram/api/instagram-scraper-api2): 
+  `` 
+  {
+    "baseURL": "https://instagram-scraper-api2.p.rapidapi.com",
+    "apiKey": "f71e549a9dmshfbb0ac22addfd31p14893fjsn6c4b9c9da8b7",
+    "apiHost": "instagram-scraper-api2.p.rapidapi.com"
+  }
+  ``
 
 ### Prerequisites
 
@@ -84,7 +92,6 @@ npm test
 yarn test
 ```
 ![plot](./__screenshot__/unittest.png)
-
 ## Folder Structure
 
 Provide a brief explanation of the project folder structure:
@@ -106,25 +113,10 @@ MyReactNativeApp
 └── README.md           # Project documentation
 ```
 
-## Contributing
-
-Contributions are welcome! Please follow these steps to contribute:
-
-1. Fork the repository.
-2. Create a new branch.
-3. Make your changes and commit them.
-4. Push your changes to your fork.
-5. Create a pull request.
-
-Please make sure to update tests as appropriate.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Contact
 
 If you have any questions, feel free to reach out:
 
 - Email: leanhforevo@gmail.com.com
-- GitHub: [your-username](https://github.com/leanhforevo)
+- GitHub: [leanhforevo](https://github.com/leanhforevo)

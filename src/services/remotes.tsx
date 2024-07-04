@@ -9,7 +9,7 @@ const instance = setupCache(
     baseURL: baseURL,
   }),
   {
-    ttl: 1000 * 60 * 360, // 360 Minutes
+    ttl: 1000 * 60 * 1, // 360 Minutes
   }
 );
 
