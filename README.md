@@ -1,8 +1,8 @@
 
 # Instagram App
 
--- InsApp is a React Native application that replicates key features of Instagram.
--- It not include all requirements, but it is the best for part time in 4 day. Hope this good for you
+- InsApp is a React Native application that replicates key features of Instagram.
+ It not include all requirements, but it is the best for part time in 4 day. Hope this good for you
 
 
 
