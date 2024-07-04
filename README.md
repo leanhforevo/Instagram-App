@@ -32,13 +32,13 @@ InsApp is a mobile application developed using React Native, aiming to provide a
 ## Getting Started
   - Add config key in ./src/services/configs.json
   - Register data in [Rappid API](https://rapidapi.com/social-api1-instagram/api/instagram-scraper-api2): 
-  `` 
+  ``` 
   {
-    "baseURL": "https://instagram-scraper-api2.p.rapidapi.com",
-    "apiKey": "f71e549a9dmshfbb0ac22addfd31p14893fjsn6c4b9c9da8b7",
-    "apiHost": "instagram-scraper-api2.p.rapidapi.com"
+    "baseURL": "",
+    "apiKey": "",
+    "apiHost": ""
   }
-  ``
+  ```
 
 ### Prerequisites
 
