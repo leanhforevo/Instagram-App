@@ -28,6 +28,7 @@ InsApp is a mobile application developed using React Native, aiming to provide a
 
 - View Reel&Post
 - Search User
+- Detail(not completed)
 - Animation
   
 
