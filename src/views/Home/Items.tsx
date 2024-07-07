@@ -1,21 +1,12 @@
 import type { PropsWithChildren } from 'react';
 import React, { memo } from 'react';
-import {
-  Image,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity
-} from 'react-native';
-
+import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
 import Swiper from 'react-native-swiper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Video from 'react-native-video';
 
-
 const ITEM_HEIGHT = 650;
-
 
 const CBN_Icons = ({ name = 'ellipsis-horizontal-outline' }) => {
   return (
@@ -31,32 +22,33 @@ const CBN_Icons = ({ name = 'ellipsis-horizontal-outline' }) => {
   );
 };
 type INS_ItemProps = PropsWithChildren<{
-  item: object,
-  index: number,
-  isPause: boolean
+  item: object;
+  index: number;
+  isPause: boolean;
 }>;
 
 import { navigate } from '../../utils/RootNavigation';
 const INS_Item = ({ item, index, isPause }: INS_ItemProps) => {
   const _evtPressItem = () => {
-    navigate('DetailsScreen',{data:item})
-  }
+    navigate('DetailsScreen', { data: item });
+  };
   return (
-    <TouchableOpacity
+    <View
       style={{
         width: '100%',
         height: ITEM_HEIGHT,
         backgroundColor: '#fff',
       }}
       activeOpacity={1}
-      onPress={_evtPressItem}
-      >
-      <View
+    >
+      <TouchableOpacity
         style={{
           width: '100%',
           height: 60,
           flexDirection: 'row',
-        }}>
+        }}
+        onPress={_evtPressItem}
+      >
         <View
           style={{
             width: 60,
@@ -81,7 +73,9 @@ const INS_Item = ({ item, index, isPause }: INS_ItemProps) => {
           <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
             {item?.user?.full_name}
           </Text>
-          <Text style={{ fontSize: 15, fontWeight: '500' }}>👀 {item?.user?.mrbeast}</Text>
+          <Text style={{ fontSize: 15, fontWeight: '500' }}>
+            👀 {item?.user?.mrbeast}
+          </Text>
         </View>
         <View
           style={{
@@ -111,7 +105,7 @@ const INS_Item = ({ item, index, isPause }: INS_ItemProps) => {
             />
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
       <View style={{ flex: 1, backgroundColor: 'black' }}>
         {!item.has_audio &&
           item.carousel_media &&
@@ -147,7 +141,6 @@ const INS_Item = ({ item, index, isPause }: INS_ItemProps) => {
             thumbnail={{
               uri: 'https://reactnative.dev/img/tiny_logo.png',
             }}
-
             onBuffer={() => {
               console.log('onBuffer');
             }}
@@ -241,7 +234,7 @@ const INS_Item = ({ item, index, isPause }: INS_ItemProps) => {
           </View>
         </View>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 };
 

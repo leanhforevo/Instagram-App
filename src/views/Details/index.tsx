@@ -1,35 +1,80 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
 
-import React from 'react';
+import React, { PropsWithChildren, useEffect, useState } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
   Text,
-  View
+  View,
+  Image
 } from 'react-native';
 
+import numeral from 'numeral';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Icon_Wrap from '../../components/Icons';
 import Header_Custom from '../../components/HeaderCustom';
-const DetailsScreen = (props) => {
-  // console.log("props DetailsScreen",props.route)
+import { AppColors, FontSize } from '../../utils/AppStyles';
+import baseAPI from '../../services/baseAPI';
+import typeUserDetails from '../../types/typeUserDetails';
+interface DataProps extends PropsWithChildren {
+  data?: typeUserDetails | null;
+}
+
+const DetailsScreen = (props: any) => {
   const { data } = props.route.params
+  const [detail, setDetail] = useState<DataProps>({ data: null })
   console.log("props data", data)
+  useEffect(() => {
+    loadData();
+  }, []);
+  const loadData = async () => {
+    const res = await baseAPI.getDetailUser(data?.user?.username)
+
+    if (res?.data) {
+      // alert(data?.user?.username)
+      setDetail(res);
+    }
+  }
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1,backgroundColor:AppColors.background}}>
       <Header_Custom title='Detail User' />
-      <View style={{ flex: 1, backgroundColor: 'pink' }}>
+      <View style={{ flex: 1, }}>
         <View style={{ flexDirection: 'row', padding: 15 }}>
-          <View style={{ width: 120, height: 120, backgroundColor: 'orange', borderRadius: 120 }} />
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
-            <ItemData title={'Bài viết'} value={123} />
-            <ItemData title={'Người theo dõi'} value={123} />
-            <ItemData title={'Đang theo dõi'} value={123} />
+          <View style={{ flex: 1, }} >
+            <Image
+              style={{
+                width: 100, height: 100, borderRadius: 120,
+                overflow: 'hidden', borderWidth: 1,
+                borderColor: AppColors.backgroundSecondary
+              }}
+              source={{
+                uri: data?.user?.profile_pic_url,
+              }}
+              resizeMode="contain"
+            />
+
+          </View>
+          <View style={{
+            flex: 3, justifyContent: 'center', alignItems: 'center',
+            flexDirection: 'row', marginLeft: 10
+          }}>
+            <ItemData title={'Bài viết'} value={detail?.data?.media_count || 0} />
+            <ItemData title={'Người theo dõi'} value={numeral(detail?.data?.follower_count).format('(0.00 a)')} titleSize={FontSize.small} />
+            <ItemData title={'Đang theo dõi'} value={detail?.data?.following_count || 0} titleSize={FontSize.small} />
+          </View>
+        </View>
+        <View style={{ padding: 15 }}>
+          <Text style={{ fontSize: FontSize.body, lineHeight: 25, fontWeight: '500' }}>{detail?.data?.full_name}</Text>
+          <Text style={{ fontSize: FontSize.body, lineHeight: 18 }}>{detail?.data?.biography}</Text>
+          <Text style={{ fontSize: FontSize.body, fontWeight: '500', lineHeight: 25 }}>{'Xem bản dịch'}</Text>
+        </View>
+        <View style={{ paddingHorizontal: 15, flexDirection: 'row' }}>
+          <View style={styles.btnFollow}>
+            <Text style={styles.txtFollow}>{'Theo dõi'}</Text>
+          </View>
+          <View style={styles.btnMessage}>
+            <Text style={styles.txtMessage}>{'Nhắn tin'}</Text>
+          </View>
+          <View style={styles.btnAddUser}>
+            <Ionicons name='rocket' size={18} color={AppColors.textPrimary} />
           </View>
         </View>
       </View>
@@ -37,12 +82,22 @@ const DetailsScreen = (props) => {
   );
 }
 
-const ItemData = ({ title, value }) => <View style={{ justifyContent: 'center', alignItems: 'center', marginHorizontal: 10 }}>
-  <Text style={{ fontSize: 18 }}>{value}</Text>
-  <Text style={{ fontSize: 14 }}>{title}</Text>
+type ItemDataProps = PropsWithChildren<{
+  title: string;
+  titleSize?: number;
+  value: number | null;
+
+}>;
+const ItemData = ({ title, titleSize = FontSize.caption, value = 0 }: ItemDataProps) => <View style={{ justifyContent: 'center', alignItems: 'center', marginHorizontal: 10 }}>
+  <Text style={{ fontSize: FontSize.body }}>{value}</Text>
+  <Text style={{ fontSize: titleSize }}>{title}</Text>
 </View>
 const styles = StyleSheet.create({
-
+  btnFollow: { flex: 1, height: 37, backgroundColor: AppColors.textAccent, borderRadius: 10, justifyContent: 'center', alignItems: 'center', marginRight: 10 },
+  txtFollow: { fontSize: FontSize.button, color: AppColors.backgroundSecondary, lineHeight: 18, fontWeight: 'bold' },
+  btnMessage: { flex: 1, height: 37, backgroundColor: AppColors.backgroundSecondary, borderRadius: 10, justifyContent: 'center', alignItems: 'center', marginRight: 10 },
+  txtMessage: { fontSize: FontSize.button, color: AppColors.textPrimary, lineHeight: 18, fontWeight: 'bold' },
+  btnAddUser: { width: 37, height: 37, backgroundColor: AppColors.backgroundSecondary, borderRadius: 10, justifyContent: 'center', alignItems: 'center' }
 });
 
 export default DetailsScreen;

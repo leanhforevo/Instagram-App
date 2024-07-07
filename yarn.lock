@@ -4205,6 +4205,11 @@ npm-run-path@^4.0.1:
 nullthrows@^1.1.1:
   version "1.1.1"
 
+numeral@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.npmjs.org/numeral/-/numeral-2.0.6.tgz"
+  integrity sha512-qaKRmtYPZ5qdw4jWJD6bxEf1FJEqllJrwxCLIm0sQU/A7v2/czigzOb+C2uSiFsa9lBUzeH7M1oK+Q+OLxL3kA==
+
 ob1@0.80.9:
   version "0.80.9"
 
